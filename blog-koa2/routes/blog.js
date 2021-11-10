@@ -33,8 +33,12 @@ router.get('/detail', async function(ctx, next){
 })
 
 router.post('/new', async function(ctx, next){
-
+  const body = ctx.request.body
+  body.author = ctx.session.username
+  const data = await newBlog(body)
+  ctx.body = new SuccessModel(data)
 })
+
 router.post('/update', loginCheck, (req, res, next) =>{
 
 })

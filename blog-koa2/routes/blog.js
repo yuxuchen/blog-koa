@@ -39,11 +39,22 @@ router.post('/new', async function(ctx, next){
   ctx.body = new SuccessModel(data)
 })
 
-router.post('/update', loginCheck, (req, res, next) =>{
-
+router.post('/update', async function(ctx, next){
+  const val = await updateBlog(ctx.query.id, ctx.request.body)
+  if(val) {
+    ctx.body = new SuccessModel()
+  }else{
+    ctx.body = new ErrorModel('fail to update blog')
+  }
 })
-router.post('/del', loginCheck, (req, res, next) =>{
-
+router.post('/del', async function(ctx, next){
+  const author = ctx.session.username
+  const val = await delBlog(ctx.query.id, author)
+  if(val){
+    ctx.body = new SuccessModel()
+  }else{
+    ctx.body = new ErrorModel('fail to delete blog')
+  }
 })
 
 module.exports = router
